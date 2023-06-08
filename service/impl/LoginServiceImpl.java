@@ -34,7 +34,6 @@ public class LoginServiceImpl implements LoginService {
     private RedisTemplate redisTemplate;
 
     @Override
-    @Async("normalThreadPool")
     public String userLoginService(UserLoginDTO userLoginDTO) {
         Authentication authentication =
                  new UsernamePasswordAuthenticationToken(
@@ -43,6 +42,11 @@ public class LoginServiceImpl implements LoginService {
         Authentication authenticate = authenticationManager.authenticate(authentication);
         AdminDetails adminDetails = (AdminDetails) authenticate.getPrincipal();
         Long userid  =  adminDetails.getId();
+        if (redisTemplate.hasKey(userid.toString())){
+            Map<String,Object> map1 = (Map<String, Object>) redisTemplate.boundValueOps(userid.toString()).get();
+            String jwt = (String) map1.get("jwt");
+            return jwt;
+        }
         String username = adminDetails.getUsername();
         Collection<GrantedAuthority> roles = adminDetails.getAuthorities();
         String roleString = JSONObject.toJSONString(roles);
@@ -61,12 +65,7 @@ public class LoginServiceImpl implements LoginService {
                 .signWith(SignatureAlgorithm.HS256, yan)
                 .compact();
         map.put("jwt",jwt);
-        if (redisTemplate.hasKey(userid.toString())){
-            Map<String,Object> map1 = (Map<String, Object>) redisTemplate.boundValueOps(userid.toString()).get();
-            jwt = (String) map1.get("jwt");
-        }else {
-            redisTemplate.boundValueOps(String.valueOf(userid)).set(map,1000 * 60 * 60 * 12, TimeUnit.MILLISECONDS);
-        }
+        redisTemplate.boundValueOps(String.valueOf(userid)).set(map,1000 * 60 * 60 * 12, TimeUnit.MILLISECONDS);
         return jwt;
     }
 }

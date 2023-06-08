@@ -52,6 +52,7 @@ public class LogService {
                  .setUserAgent(userAgent);
         mongoTemplate.save(aopEntity,"userlog");
         Map<String,Object> map = (Map<String, Object>) pjd.proceed();
+        map.forEach((k,v)-> System.out.println(k + " ______________" + v));
         String s = String.valueOf(map.get("message"));
         String message = s.substring(2,4);
         System.out.println(message);

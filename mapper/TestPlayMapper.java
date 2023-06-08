@@ -1,6 +1,7 @@
 package com.example.totaldemo.mapper;
 
 
+import com.example.totaldemo.pojo.entity.BookEntity;
 import com.example.totaldemo.pojo.entity.BookTestRabbit;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -36,7 +37,12 @@ public interface TestPlayMapper {
     int insertBook(BookTestRabbit bookTestRabbit);
 
     /**
-     * 根据id查看指定书籍
+     * 根据id查看指定书籍(Rabbit)
      */
     BookTestRabbit selectBookById(@Param("id") Integer bookId);
+
+    /**
+     * 根据id查看指定书籍
+     */
+    BookEntity selectBookByIdEntity(@Param("id") Integer bookId);
 }

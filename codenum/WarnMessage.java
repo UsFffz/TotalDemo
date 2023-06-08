@@ -21,4 +21,6 @@ public class WarnMessage {
 
     public static final String WARN_MESSAGE_SUCCESS = "购买成功";
 
+    public static final String WARN_UPDATE_COUPON = "在修改用户优惠卷数量时出现错误,请根据日志手动查找对应错误语句";
+
 }

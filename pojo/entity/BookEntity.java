@@ -12,8 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class BookTestRabbit implements Serializable {
-
+public class BookEntity  implements Serializable {
     /**
      * 书籍id
      */
@@ -42,6 +41,10 @@ public class BookTestRabbit implements Serializable {
     /**
      * 书籍售价
      */
-    private Integer sale;
+    private BigDecimal sale;
 
+    /**
+     * 该书籍购买后所加积分
+     */
+    private Integer integral;
 }
